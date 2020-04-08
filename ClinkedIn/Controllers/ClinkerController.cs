@@ -16,7 +16,7 @@ namespace ClinkedIn.Controllers
         [HttpPost]
         public IActionResult AddClinker(Clinker clinkerToAdd)
         {
-            var existingClinker = _repository.GetByFullName();
+            var existingClinker = _repository.GetByFullName(clinkerToAdd);
             if (existingClinker == null)
             {
                 _repository.Add(clinkerToAdd);           
