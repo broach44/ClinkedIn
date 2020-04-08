@@ -39,7 +39,7 @@ namespace ClinkedIn.DataAccessLayer
             throw new NotImplementedException();
         }
 
-        public Clinker GetInmatesByInterests(Interests interest)
+        public List<Clinker> GetInmatesByInterests()
         {
             throw new NotImplementedException();
         }
