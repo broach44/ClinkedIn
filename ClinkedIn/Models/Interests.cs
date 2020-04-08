@@ -4,8 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace ClinkedIn.Models
-{
-    public class Interests
+{ 
+    enum Interests
     {
+        ShowTunesin,
+        Killin,
+        BeatBoxin,
+        BasketWeavin,
+        Origamin
     }
 }
