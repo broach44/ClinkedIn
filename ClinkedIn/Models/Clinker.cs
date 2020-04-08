@@ -7,16 +7,11 @@ namespace ClinkedIn.Models
 {
     public class Clinker
     {
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
         public List<Clinker> Enemies { get; set; }
         public List<Clinker> Friends { get; set; }
-
-        public Clinker(string firstName, string lastName)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-        }
     }
 }
