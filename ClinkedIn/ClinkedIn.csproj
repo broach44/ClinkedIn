@@ -10,7 +10,7 @@
 
 
   <ItemGroup>
-    <Folder Include="Model\" />
+    <Folder Include="Models\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
 </Project>
