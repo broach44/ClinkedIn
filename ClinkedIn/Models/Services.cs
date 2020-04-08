@@ -7,5 +7,7 @@ namespace ClinkedIn.Models
 {
     public class Services
     {
+        public string Name { get; set; }
+        public double Price { get; set; }
     }
 }
