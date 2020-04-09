@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ClinkedIn.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/ClinkedIn")]
     [ApiController]
     public class ClinkerController : ControllerBase
     {
@@ -38,10 +38,21 @@ namespace ClinkedIn.Controllers
             return Ok(allClinkers);
         }
 
-        [HttpGet("{interest}")]
-        public IActionResult GetClinkerByInterest()
+        // api/ClinkedIn/searchByInterest/{interest}
+        // api/ClinkedIn/searchByInterest/origamin
+        [HttpGet("searchByInterest/{interest}")]
+        public IActionResult GetByInterest(string interest)
         {
-            throw new NotImplementedException();
+            var clinkersWithInterest = _repository.GetClinkerByInterest(interest);
+            var isEmpty = !clinkersWithInterest.Any();
+            if (!isEmpty)
+            { 
+                return Ok(clinkersWithInterest);
+            }
+            else
+            {
+                return Ok("No Clinkers Found With Those Interests");
+            }
         }
 
         [HttpPut]
