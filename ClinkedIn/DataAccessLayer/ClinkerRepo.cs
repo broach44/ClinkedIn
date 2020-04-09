@@ -8,7 +8,29 @@ namespace ClinkedIn.DataAccessLayer
 {
     public class ClinkerRepo
     {
-        static List<Clinker> _clinkers = new List<Clinker>() { new Clinker { Id = 1, FirstName = "John", LastName = "Doe" } };
+        static List<Clinker> _clinkers = new List<Clinker>() 
+        {
+            new Clinker { Id = 1, FirstName = "John", LastName = "Doe", Interests = new List<string>() { "Killin" } },
+            new Clinker { Id = 2, FirstName = "Jimmie", LastName = "John", Interests = new List<string>() { "Killin" } },
+            new Clinker { Id = 3, FirstName = "Sam", LastName = "Smith", Interests = new List<string>() { "BeatBoxin" } },
+            new Clinker { Id = 4, FirstName = "Samson", LastName = "Smith", Interests = new List<string>() { "BeatBoxin" } }
+        };
+
+        static List<Services> _services = new List<Services>()
+        {
+            new Services { Id = 1, Name= "Hair Cut", Price = 3.00 },
+            new Services { Id = 2, Name= "Legal Advice", Price = 5.00 },
+            new Services { Id = 3, Name= "Cuddle Buddy", Price = 2.00 }
+        };
+
+        static List<string> _interests = new List<string>()
+        {
+            "ShowTunesin",
+            "Killin",
+            "BeatBoxin",
+            "BasketWeavin",
+            "Origamin"
+        };
 
         public Clinker GetByFullName(Clinker clinkerToAdd)
         {
@@ -27,21 +49,47 @@ namespace ClinkedIn.DataAccessLayer
             return _clinkers;
         }
 
-        public Clinker GetClinkerById(Clinker clinker)
+        public Clinker GetClinkerById(int clinkerId)
         {
-            return _clinkers.FirstOrDefault(c => c.Id == clinker.Id);
+            return _clinkers.FirstOrDefault(c => c.Id == clinkerId);
         }
 
-        public Clinker UpdateClinker(Clinker clinker)
+        public void CheckMasterInterestsAndUpdate(string newInterest)
         {
-            //var clinkerToUpdate = GetClinkerById(clinker);
-            //return clinkerToUpdate;
-            throw new NotImplementedException();
+            var existingInterest = _interests.FirstOrDefault(i => i.ToLower() == newInterest.ToLower());
+            if (existingInterest == null)
+            {
+                _interests.Add(newInterest);
+            }
         }
 
-        public List<Clinker> GetInmatesByInterests()
+        public List<string> GetInterestsByClinkerId(int id)
         {
-            throw new NotImplementedException();
+            var targetClinker = GetClinkerById(id);
+            return targetClinker.Interests;
+        }
+
+        public List<Services> GetServicessByClinkerId(int id)
+        {
+            var targetClinker = GetClinkerById(id);
+            return targetClinker.Service;
+        }
+
+        //public Clinker UpdateClinker(Clinker clinker)
+        //{
+        //    //var clinkerToUpdate = GetClinkerById(clinker.Id);
+        //    //return clinkerToUpdate;
+        //    throw new NotImplementedException();
+        //}
+
+        public List<Clinker> GetClinkerByInterest(string interest)
+        {
+            // search through the List of Clinkers and pull in ones that match the interest
+            // 1. search each clinker
+            // 2. search clinkers interests and see if they match the interest argument
+            var clinkerInterestMatch = _clinkers.FindAll(x => x.Interests.Contains(interest));
+
+            return clinkerInterestMatch;
         }
 
         public Services GetMyServices()

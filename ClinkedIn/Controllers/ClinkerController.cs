@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ClinkedIn.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Clinker")]
     [ApiController]
     public class ClinkerController : ControllerBase
     {
@@ -38,16 +38,45 @@ namespace ClinkedIn.Controllers
             return Ok(allClinkers);
         }
 
-        [HttpGet("{interest}")]
-        public IActionResult GetClinkerByInterest()
+        // api/ClinkedIn/searchByInterest/{interest}
+        // api/ClinkedIn/searchByInterest/origamin
+        [HttpGet("searchByInterest/{interest}")]
+        public IActionResult GetByInterest(string interest)
         {
-            throw new NotImplementedException();
+            var clinkersWithInterest = _repository.GetClinkerByInterest(interest);
+            var isEmpty = !clinkersWithInterest.Any();
+            if (!isEmpty)
+            {
+                return Ok(clinkersWithInterest);
+            }
+            else
+            {
+                return Ok("No Clinkers Found With Those Interests");
+            }
         }
 
-        [HttpPut]
-        public IActionResult UpdateClinker()
+        [HttpPut("AddInterest/{id}/{interest}")]
+        public IActionResult AddInterest(int id, string interest)
         {
-            throw new NotImplementedException();
+            var clinkerExists = _repository.GetClinkerById(id);
+            if (clinkerExists == null)
+            {
+                return BadRequest($"The user id {id} could not be found.");
+            }
+            else
+            {
+                var currentInterests = _repository.GetInterestsByClinkerId(id);
+                if (currentInterests.Contains(interest))
+                {
+                    return BadRequest($"{interest} is already on {clinkerExists.FirstName}'s interest list");
+                }
+                else
+                {
+                    _repository.CheckMasterInterestsAndUpdate(interest);
+                    clinkerExists.AddInterests(interest);
+                    return Ok(_repository.GetClinkerById(id));
+                }
+            }
         }
 
 }
