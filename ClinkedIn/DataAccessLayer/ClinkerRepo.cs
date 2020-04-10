@@ -4,11 +4,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
+
 namespace ClinkedIn.DataAccessLayer
 {
     public class ClinkerRepo
     {
-        static List<Clinker> _clinkers = new List<Clinker>() { new Clinker { Id = 1, FirstName = "John", LastName = "Doe" } };
+        static List<Clinker> _clinkers = new List<Clinker>() { 
+            new Clinker { Id = 1, FirstName = "John", LastName = "Doe" }, 
+            new Clinker {Id = 2, FirstName = "ButterCup", LastName = "Johnson"},
+            new Clinker {Id = 3, FirstName = "Slash", LastName = "MacGruber"},
+            new Clinker {Id = 4, FirstName = "Slick", LastName = "Willie"},
+            new Clinker {Id = 5, FirstName = "LittleShoe", LastName = "Wilomena" }
+        };
+
+        
+
+    static List<string> _interests = new List<string>()
+        {
+            "ShowTunesin",
+            "Killin",
+            "BeatBoxin",
+            "BasketWeavin",
+            "Origamin"
+        };
 
         public Clinker GetByFullName(Clinker clinkerToAdd)
         {
@@ -49,9 +68,10 @@ namespace ClinkedIn.DataAccessLayer
             throw new NotImplementedException();
         }
 
-        public Clinker GetMyFriends()
+        public Clinker AddNewFriend(Clinker ClinkerToAdd)
         {
-            throw new NotImplementedException();
+            return _clinkers.FirstOrDefault(clinker => clinker.Id == ClinkerToAdd.Id);
+            
         }
 
         public Clinker GetMyEnemies()
