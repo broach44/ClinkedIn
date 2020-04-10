@@ -11,7 +11,7 @@ namespace ClinkedIn.Models
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
+        public List<string> Interests { get; set; }
         public List<Clinker> Enemies { get; set; }
         public List<Clinker> Friends { get; set; }
 
@@ -23,4 +23,6 @@ namespace ClinkedIn.Models
             
         }
     }
+
+
 }

@@ -10,6 +10,7 @@ namespace ClinkedIn.DataAccessLayer
 {
     public class ClinkerRepo
     {
+<<<<<<< HEAD
         static List<Clinker> _clinkers = new List<Clinker>() { 
             new Clinker { Id = 1, FirstName = "John", LastName = "Doe" }, 
             new Clinker {Id = 2, FirstName = "ButterCup", LastName = "Johnson"},
@@ -21,6 +22,17 @@ namespace ClinkedIn.DataAccessLayer
         
 
     static List<string> _interests = new List<string>()
+=======
+        static List<Clinker> _clinkers = new List<Clinker>()
+        {
+            new Clinker { Id = 1, FirstName = "John", LastName = "Doe", Interests = new List<string>() { "Killin" } },
+            new Clinker { Id = 2, FirstName = "Jimmie", LastName = "John", Interests = new List<string>() { "Killin" } },
+            new Clinker { Id = 3, FirstName = "Sam", LastName = "Smith", Interests = new List<string>() { "BeatBoxin" } },
+            new Clinker { Id = 4, FirstName = "Samson", LastName = "Smith", Interests = new List<string>() { "BeatBoxin" } }
+
+        };
+        static List<string> _interests = new List<string>()
+>>>>>>> master
         {
             "ShowTunesin",
             "Killin",
@@ -58,9 +70,14 @@ namespace ClinkedIn.DataAccessLayer
             throw new NotImplementedException();
         }
 
-        public List<Clinker> GetInmatesByInterests()
+        public List<Clinker> GetClinkerByInterest(string interest)
         {
-            throw new NotImplementedException();
+            // search through the List of Clinkers and pull in ones that match the interest
+            // 1. search each clinker
+            // 2. search clinkers interests and see if they match the interest argument
+            var clinkerInterestMatch = _clinkers.FindAll(x => x.Interests.Contains(interest));
+        
+            return clinkerInterestMatch;
         }
 
         public Services GetMyServices()
