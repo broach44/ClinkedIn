@@ -72,6 +72,23 @@ namespace ClinkedIn.Controllers
             }
         }
 
+        //api/Clinker/1/searchForPrisonTerm
+        //api/Clinker/{id}/searchForPrisonTerm
+        [HttpGet("{id}/searchForPrisonTerm")]
+        public IActionResult GetByPrisonTerm(int id)
+        {
+            var inmatePrisonTerm = _repository.GetClinkerByPrisonTerm(id);
+            //var noSentence = !inmatePrisonTerm.Any();
+            //if (!noSentence)
+            //{
+                return Ok(inmatePrisonTerm);
+            //}
+            //else
+            //{
+            //    return Ok("No prison term available for this inmate.");
+            //}
+        }
+
         
         
          //api/Clinker/1/addFriend/2       

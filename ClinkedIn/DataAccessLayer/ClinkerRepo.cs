@@ -17,14 +17,14 @@ namespace ClinkedIn.DataAccessLayer
    
         static List<Clinker> _clinkers = new List<Clinker>()
         {
-            new Clinker { Id = 1, FirstName = "John", LastName = "Doe", Interests = new List<string>() { "Killin" }, Friends = new List<Clinker>() },
-            new Clinker { Id = 2, FirstName = "Jimmie", LastName = "John", Interests = new List<string>() { "Killin" } },
-            new Clinker { Id = 3, FirstName = "Sam", LastName = "Smith", Interests = new List<string>() { "BeatBoxin" } },
-            new Clinker { Id = 4, FirstName = "Samson", LastName = "Smith", Interests = new List<string>() { "BeatBoxin" } },
-            new Clinker {Id = 5, FirstName = "ButterCup", LastName = "Johnson", Interests = new List<string>() {"BasketWeavin", "Origamin" } },
-            new Clinker {Id = 6, FirstName = "Slash", LastName = "MacGruber", Interests = new List<string>() { "Killin", "BasketWeavin" }},
-            new Clinker {Id = 7, FirstName = "Slick", LastName = "Willie", Interests = new List<string>() { "Origamin" }},
-            new Clinker {Id = 8, FirstName = "LittleShoe", LastName = "Wilomena", Interests = new List<string>() { "Killin", "BeatBoxin", "Origamin" } },
+            new Clinker { Id = 1, FirstName = "John", LastName = "Doe", PrisonTerm = 5, Interests = new List<string>() { "Killin" }, Friends = new List<Clinker>() },
+            new Clinker { Id = 2, FirstName = "Jimmie", LastName = "John", PrisonTerm = 22, Interests = new List<string>() { "Killin" } },
+            new Clinker { Id = 3, FirstName = "Sam", LastName = "Smith", PrisonTerm = 12, Interests = new List<string>() { "BeatBoxin" } },
+            new Clinker { Id = 4, FirstName = "Samson", LastName = "Smith", PrisonTerm = 4, Interests = new List<string>() { "BeatBoxin" } },
+            new Clinker {Id = 5, FirstName = "ButterCup", LastName = "Johnson", PrisonTerm = 10, Interests = new List<string>() {"BasketWeavin", "Origamin" } },
+            new Clinker {Id = 6, FirstName = "Slash", LastName = "MacGruber", PrisonTerm = 30, Interests = new List<string>() { "Killin", "BasketWeavin" }},
+            new Clinker {Id = 7, FirstName = "Slick", LastName = "Willie", PrisonTerm = 2, Interests = new List<string>() { "Origamin" }},
+            new Clinker {Id = 8, FirstName = "LittleShoe", LastName = "Wilomena", PrisonTerm = 27, Interests = new List<string>() { "Killin", "BeatBoxin", "Origamin" } },
 
         };
         static List<string> _interests = new List<string>()
@@ -76,11 +76,21 @@ namespace ClinkedIn.DataAccessLayer
             return clinkerInterestMatch;
         }
 
+        public int GetClinkerByPrisonTerm(int id)
+
+        {
+            var clinkerPrisonTerm = GetClinkerById(id).PrisonTerm;
+            
+            return clinkerPrisonTerm;
+        }
+
         public Services GetMyServices()
         {
             throw new NotImplementedException();
         }
  
+       
+
         public Clinker UpdateFriend(int clinkerToUpdateId, int clinkerToAddId)
         {
                 var newClinkerFriend = GetClinkerById(clinkerToAddId);
