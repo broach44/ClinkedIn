@@ -10,10 +10,18 @@ namespace ClinkedIn.DataAccessLayer
     {
         static List<Clinker> _clinkers = new List<Clinker>() 
         {
-            new Clinker { Id = 1, FirstName = "John", LastName = "Doe", Interests = new List<string>() { "Killin" } },
+
+
+            new Clinker { Id = 1, FirstName = "John", LastName = "Doe", Interests = new List<string>() { "Killin" }, Friends = new List<Clinker>(), Enemies = new List<Clinker>() },
             new Clinker { Id = 2, FirstName = "Jimmie", LastName = "John", Interests = new List<string>() { "Killin" } },
             new Clinker { Id = 3, FirstName = "Sam", LastName = "Smith", Interests = new List<string>() { "BeatBoxin" } },
-            new Clinker { Id = 4, FirstName = "Samson", LastName = "Smith", Interests = new List<string>() { "BeatBoxin" } }
+            new Clinker { Id = 4, FirstName = "Samson", LastName = "Smith", Interests = new List<string>() { "BeatBoxin" } },
+            new Clinker {Id = 5, FirstName = "ButterCup", LastName = "Johnson", Interests = new List<string>() {"BasketWeavin", "Origamin" } },
+            new Clinker {Id = 6, FirstName = "Slash", LastName = "MacGruber", Interests = new List<string>() { "Killin", "BasketWeavin" }},
+            new Clinker {Id = 7, FirstName = "Slick", LastName = "Willie", Interests = new List<string>() { "Origamin" }},
+            new Clinker {Id = 8, FirstName = "LittleShoe", LastName = "Wilomena", Interests = new List<string>() { "Killin", "BeatBoxin", "Origamin" } },
+
+
         };
 
         static List<Services> _services = new List<Services>()
@@ -54,6 +62,16 @@ namespace ClinkedIn.DataAccessLayer
             return _clinkers.FirstOrDefault(c => c.Id == clinkerId);
         }
 
+        public List<Clinker> GetClinkerByInterest(string interest)
+        {
+            // search through the List of Clinkers and pull in ones that match the interest
+            // 1. search each clinker
+            // 2. search clinkers interests and see if they match the interest argument
+            var clinkerInterestMatch = _clinkers.FindAll(x => x.Interests.Contains(interest));
+
+            return clinkerInterestMatch;
+        }
+
         public void CheckMasterInterestsAndUpdate(string newInterest)
         {
             var existingInterest = _interests.FirstOrDefault(i => i.ToLower() == newInterest.ToLower());
@@ -61,6 +79,12 @@ namespace ClinkedIn.DataAccessLayer
             {
                 _interests.Add(newInterest);
             }
+        }
+
+        public List<string> GetInterestsByClinkerId(int id)
+        {
+            var targetClinker = GetClinkerById(id);
+            return targetClinker.Interests;
         }
 
         public Services CheckForService(Services newService)
@@ -74,48 +98,28 @@ namespace ClinkedIn.DataAccessLayer
             _services.Add(newService);
         }
 
-        public List<string> GetInterestsByClinkerId(int id)
-        {
-            var targetClinker = GetClinkerById(id);
-            return targetClinker.Interests;
-        }
 
         public List<Services> GetServicesByClinkerId(int id)
         {
             var targetClinker = GetClinkerById(id);
-            return targetClinker.Service;
+            return targetClinker.Services;
         }
 
-        //public Clinker UpdateClinker(Clinker clinker)
-        //{
-        //    //var clinkerToUpdate = GetClinkerById(clinker.Id);
-        //    //return clinkerToUpdate;
-        //    throw new NotImplementedException();
-        //}
-
-        public List<Clinker> GetClinkerByInterest(string interest)
+        public Clinker UpdateFriend(int clinkerToUpdateId, int clinkerToAddId)
         {
-            // search through the List of Clinkers and pull in ones that match the interest
-            // 1. search each clinker
-            // 2. search clinkers interests and see if they match the interest argument
-            var clinkerInterestMatch = _clinkers.FindAll(x => x.Interests.Contains(interest));
+            var newClinkerFriend = GetClinkerById(clinkerToAddId);
+            var clinkerToUpdate = GetClinkerById(clinkerToUpdateId);
+            clinkerToUpdate.AddNewFriend(newClinkerFriend);
+            return clinkerToUpdate;
 
-            return clinkerInterestMatch;
         }
 
-        public Services GetMyServices()
+        public Clinker UpdateEnemy(int clinkerToUpdateId, int clinkerToAddId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Clinker GetMyFriends()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Clinker GetMyEnemies()
-        {
-            throw new NotImplementedException();
+            var newClinkerEnemy = GetClinkerById(clinkerToAddId);
+            var clinkerToUpdate = GetClinkerById(clinkerToUpdateId);
+            clinkerToUpdate.AddNewEnemy(newClinkerEnemy);
+            return clinkerToUpdate;
         }
     }
 }
