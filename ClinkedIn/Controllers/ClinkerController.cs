@@ -97,14 +97,15 @@ namespace ClinkedIn.Controllers
         public IActionResult GetAllFriendsOfMyFriends(int id)
         {
             var allMyFriends = _repository.AllFriendsOfFriends(id);
+            var isEmpty = !allMyFriends.Any();
 
-            if (allMyFriends != null)
+            if (!isEmpty)
             {
                 return Ok(allMyFriends);
             }
             else
             {
-                return Ok("You have no friends!");
+                return Ok("Your friends have no friends");
             }
 ;       }
         
