@@ -21,6 +21,9 @@ namespace ClinkedIn.Models
         public Clinker()
         {
             Friends = new List<Clinker>();
+            Enemies = new List<Clinker>();
+            Interests = new List<string>();
+            Services = new List<Services>();
         }
         public void AddNewFriend(Clinker newClinkerFriend) => Friends.Add(newClinkerFriend);
         public void AddNewEnemy(Clinker newClinkerEnemy) => Enemies.Add(newClinkerEnemy);
