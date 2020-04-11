@@ -15,13 +15,14 @@ namespace ClinkedIn.Controllers
     {
         ClinkerRepo _repository = new ClinkerRepo();
 
+
         [HttpPost]
         public IActionResult AddClinker(Clinker clinkerToAdd)
         {
             var existingClinker = _repository.GetByFullName(clinkerToAdd);
             if (existingClinker == null)
             {
-                _repository.Add(clinkerToAdd);           
+                _repository.Add(clinkerToAdd);
                 return Created("", clinkerToAdd);
             }
             else
@@ -36,6 +37,22 @@ namespace ClinkedIn.Controllers
             var allClinkers = _repository.GetAll();
 
             return Ok(allClinkers);
+        }
+
+        // api/Clinker/{id}
+        // api/Clinker/5
+        [HttpGet("{id}")]
+        public IActionResult GetSingleClinker(int id)
+        {
+            var singleClinker = _repository.GetClinkerById(id);
+            if (singleClinker != null)
+            {
+                return Ok(singleClinker);
+            } 
+            else
+            {
+                return NotFound("No clinker found");
+            }
         }
 
         // api/ClinkedIn/searchByInterest/{interest}
@@ -55,11 +72,16 @@ namespace ClinkedIn.Controllers
             }
         }
 
-        [HttpPut]
-        public IActionResult UpdateClinker()
+        
+        
+         //api/Clinker/1/addFriend/2       
+        [HttpPut("{clinkerId}/addFriend/{friendId}")]
+        public IActionResult UpdateClinkerFriends(int clinkerId, int friendId)
         {
-            throw new NotImplementedException();
+            var updatedClinker = _repository.UpdateFriend(clinkerId, friendId);
+            return Ok(updatedClinker);
+           
         }
-
-}
+        
+    }
 }
