@@ -15,13 +15,11 @@ namespace ClinkedIn.Models
         public List<Clinker> Enemies { get; set; }
         public List<Clinker> Friends { get; set; }
 
-        //public List<Interests> Interests { get; set; }
+        
         public List <Services> Services { get; set; }
 
-        public void AddFriend()
-        {
-            
-        }
+        public void AddNewFriend(Clinker newClinkerFriend) => Friends.Add(newClinkerFriend);
+        
     }
 
 

@@ -11,8 +11,7 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "clinker",
+      "launchUrl": "api/clinker",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

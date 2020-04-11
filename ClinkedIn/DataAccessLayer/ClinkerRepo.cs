@@ -10,29 +10,25 @@ namespace ClinkedIn.DataAccessLayer
 {
     public class ClinkerRepo
     {
-<<<<<<< HEAD
-        static List<Clinker> _clinkers = new List<Clinker>() { 
-            new Clinker { Id = 1, FirstName = "John", LastName = "Doe" }, 
-            new Clinker {Id = 2, FirstName = "ButterCup", LastName = "Johnson"},
-            new Clinker {Id = 3, FirstName = "Slash", LastName = "MacGruber"},
-            new Clinker {Id = 4, FirstName = "Slick", LastName = "Willie"},
-            new Clinker {Id = 5, FirstName = "LittleShoe", LastName = "Wilomena" }
-        };
+        
 
         
 
-    static List<string> _interests = new List<string>()
-=======
+   
         static List<Clinker> _clinkers = new List<Clinker>()
         {
-            new Clinker { Id = 1, FirstName = "John", LastName = "Doe", Interests = new List<string>() { "Killin" } },
+            new Clinker { Id = 1, FirstName = "John", LastName = "Doe", Interests = new List<string>() { "Killin" }, Friends = new List<Clinker>() },
             new Clinker { Id = 2, FirstName = "Jimmie", LastName = "John", Interests = new List<string>() { "Killin" } },
             new Clinker { Id = 3, FirstName = "Sam", LastName = "Smith", Interests = new List<string>() { "BeatBoxin" } },
-            new Clinker { Id = 4, FirstName = "Samson", LastName = "Smith", Interests = new List<string>() { "BeatBoxin" } }
+            new Clinker { Id = 4, FirstName = "Samson", LastName = "Smith", Interests = new List<string>() { "BeatBoxin" } },
+            new Clinker {Id = 5, FirstName = "ButterCup", LastName = "Johnson", Interests = new List<string>() {"BasketWeavin", "Origamin" } },
+            new Clinker {Id = 6, FirstName = "Slash", LastName = "MacGruber", Interests = new List<string>() { "Killin", "BasketWeavin" }},
+            new Clinker {Id = 7, FirstName = "Slick", LastName = "Willie", Interests = new List<string>() { "Origamin" }},
+            new Clinker {Id = 8, FirstName = "LittleShoe", LastName = "Wilomena", Interests = new List<string>() { "Killin", "BeatBoxin", "Origamin" } },
 
         };
         static List<string> _interests = new List<string>()
->>>>>>> master
+
         {
             "ShowTunesin",
             "Killin",
@@ -58,9 +54,9 @@ namespace ClinkedIn.DataAccessLayer
             return _clinkers;
         }
 
-        public Clinker GetClinkerById(Clinker clinker)
+        public Clinker GetClinkerById(int clinkerId)
         {
-            return _clinkers.FirstOrDefault(c => c.Id == clinker.Id);
+            return _clinkers.FirstOrDefault(c => c.Id == clinkerId);
         }
 
         public Clinker UpdateClinker(Clinker clinker)
@@ -84,16 +80,20 @@ namespace ClinkedIn.DataAccessLayer
         {
             throw new NotImplementedException();
         }
-
-        public Clinker AddNewFriend(Clinker ClinkerToAdd)
+ 
+        public Clinker UpdateFriend(int clinkerToUpdateId, int clinkerToAddId)
         {
-            return _clinkers.FirstOrDefault(clinker => clinker.Id == ClinkerToAdd.Id);
-            
+                var newClinkerFriend = GetClinkerById(clinkerToAddId);
+                var clinkerToUpdate = GetClinkerById(clinkerToUpdateId);
+                clinkerToUpdate.AddNewFriend(newClinkerFriend);
+                return clinkerToUpdate;
+        
         }
+
 
         public Clinker GetMyEnemies()
         {
             throw new NotImplementedException();
         }
-    }
+        }
 }
