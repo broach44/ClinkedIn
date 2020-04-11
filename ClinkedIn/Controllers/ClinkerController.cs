@@ -82,6 +82,15 @@ namespace ClinkedIn.Controllers
             return Ok(updatedClinker);
            
         }
-        
+
+        //api/Clinker/1/addEnemy/2       
+        [HttpPut("{clinkerId}/addEnemy/{enemyId}")]
+        public IActionResult UpdateClinkerEnemies(int clinkerId, int enemyId)
+        {
+            var updatedClinker = _repository.UpdateEnemy(clinkerId, enemyId);
+            return Ok(updatedClinker);
+
+        }
+
     }
 }
