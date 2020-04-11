@@ -10,8 +10,8 @@ namespace ClinkedIn.DataAccessLayer
 {
     public class ClinkerRepo
     {
-   
-        static List<Clinker> _clinkers = new List<Clinker>()
+
+        static List<Clinker> _clinkers = new List<Clinker>() 
         {
 
             new Clinker { Id = 1, FirstName = "John", LastName = "Doe", Interests = new List<string>() { "Killin" } },
@@ -24,8 +24,15 @@ namespace ClinkedIn.DataAccessLayer
             new Clinker {Id = 8, FirstName = "LittleShoe", LastName = "Wilomena", Interests = new List<string>() { "Killin", "BeatBoxin", "Origamin" } },
 
         };
-        static List<string> _interests = new List<string>()
 
+        static List<Services> _services = new List<Services>()
+        {
+            new Services { Id = 1, Name= "Hair Cut", Price = 3.00 },
+            new Services { Id = 2, Name= "Legal Advice", Price = 5.00 },
+            new Services { Id = 3, Name= "Cuddle Buddy", Price = 2.00 }
+        };
+
+        static List<string> _interests = new List<string>()
         {
             "ShowTunesin",
             "Killin",
@@ -74,9 +81,13 @@ namespace ClinkedIn.DataAccessLayer
             return _clinkers.FirstOrDefault(c => c.Id == clinkerId);
         }
 
-        public Clinker UpdateClinker(Clinker clinker)
+        public void CheckMasterInterestsAndUpdate(string newInterest)
         {
-            throw new NotImplementedException();
+            var existingInterest = _interests.FirstOrDefault(i => i.ToLower() == newInterest.ToLower());
+            if (existingInterest == null)
+            {
+                _interests.Add(newInterest);
+            }
         }
 
         public List<Clinker> GetClinkerByInterest(string interest)
@@ -86,9 +97,28 @@ namespace ClinkedIn.DataAccessLayer
             return clinkerInterestMatch;
         }
 
-        public Services GetMyServices()
+        public List<string> GetInterestsByClinkerId(int id)
         {
-            throw new NotImplementedException();
+            var targetClinker = GetClinkerById(id);
+            return targetClinker.Interests;
+        }
+
+        public Services CheckForService(Services newService)
+        {
+            return _services.FirstOrDefault(s => s.Name.ToLower() == newService.Name.ToLower());
+        }
+
+        public void CreateService(Services newService)
+        {
+            newService.Id = _services.Max(i => i.Id) + 1;
+            _services.Add(newService);
+        }
+
+
+        public List<Services> GetServicesByClinkerId(int id)
+        {
+            var targetClinker = GetClinkerById(id);
+            return targetClinker.Services;
         }
  
         public Clinker UpdateFriend(int clinkerToUpdateId, int clinkerToAddId)
@@ -106,5 +136,5 @@ namespace ClinkedIn.DataAccessLayer
             clinkerToUpdate.AddNewEnemy(newClinkerEnemy);
             return clinkerToUpdate;
         }
-        }
+    }
 }
