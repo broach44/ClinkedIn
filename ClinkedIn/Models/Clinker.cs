@@ -19,8 +19,8 @@ namespace ClinkedIn.Models
         public List <Services> Services { get; set; }
 
         public void AddNewFriend(Clinker newClinkerFriend) => Friends.Add(newClinkerFriend);
-        
-    }
+        public void AddNewEnemy(Clinker newClinkerEnemy) => Enemies.Add(newClinkerEnemy);
 
+    }
 
 }
