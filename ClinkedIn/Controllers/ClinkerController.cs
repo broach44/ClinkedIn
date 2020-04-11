@@ -31,6 +31,21 @@ namespace ClinkedIn.Controllers
             }
         }
 
+        [HttpPost("services")]
+        public IActionResult CreateService(Services ServiceToAdd)
+        {
+            var existingService = _repository.CheckForService(ServiceToAdd);
+            if (existingService == null)
+            {
+                _repository.CreateService(ServiceToAdd);
+                return Ok(ServiceToAdd);
+            }
+            else
+            {
+                return BadRequest("This service already exists");
+            }
+        }
+
         [HttpGet]
         public IActionResult GetAllClinkers()
         {
@@ -55,8 +70,8 @@ namespace ClinkedIn.Controllers
             }
         }
 
-        // api/ClinkedIn/searchByInterest/{interest}
-        // api/ClinkedIn/searchByInterest/origamin
+        // api/Clinker/searchByInterest/{interest}
+        // api/Clinker/searchByInterest/origamin
         [HttpGet("searchByInterest/{interest}")]
         public IActionResult GetByInterest(string interest)
         {
@@ -71,6 +86,7 @@ namespace ClinkedIn.Controllers
                 return Ok("No Clinkers Found With Those Interests");
             }
         }
+
 
         //api/Clinker/1/searchForPrisonTerm
         //api/Clinker/{id}/searchForPrisonTerm
@@ -90,6 +106,44 @@ namespace ClinkedIn.Controllers
         }
 
         
+
+        // api/Clinker/1/myFriends
+        // api/Clinker/{id}/myFriends
+        [HttpGet("{id}/myFriends")]
+        public IActionResult GetAllMyFriends(int id)
+        {
+            var allMyFriends = _repository.GetAllMyFriends(id);
+            var isEmpty = !allMyFriends.Any();
+
+            if (!isEmpty)
+            {
+                return Ok(allMyFriends);
+            }
+            else
+            {
+                return Ok("You have no friends!");
+            }
+
+        }
+
+        // api/Clinker/1/FriendsOfMyFriends
+        // api/Clinker/{id}/FriendsOfMyFriends
+        [HttpGet("{id}/FriendsOfMyFriends")]
+        public IActionResult GetAllFriendsOfMyFriends(int id)
+        {
+            var allMyFriends = _repository.AllFriendsOfFriends(id);
+            var isEmpty = !allMyFriends.Any();
+
+            if (!isEmpty)
+            {
+                return Ok(allMyFriends);
+            }
+            else
+            {
+                return Ok("Your friends have no friends");
+            }
+       }
+
         
          //api/Clinker/1/addFriend/2       
         [HttpPut("{clinkerId}/addFriend/{friendId}")]
@@ -97,8 +151,124 @@ namespace ClinkedIn.Controllers
         {
             var updatedClinker = _repository.UpdateFriend(clinkerId, friendId);
             return Ok(updatedClinker);
-           
         }
-        
+
+        //api/Clinker/1/addEnemy/2       
+        [HttpPut("{clinkerId}/addEnemy/{enemyId}")]
+        public IActionResult UpdateClinkerEnemies(int clinkerId, int enemyId)
+        {
+            var updatedClinker = _repository.UpdateEnemy(clinkerId, enemyId);
+            return Ok(updatedClinker);
+        }
+
+        //api/Clinker/AddInterest/1/archery
+        [HttpPut("AddInterest/{id}/{interest}")]
+        public IActionResult AddInterest(int id, string interest)
+        {
+            var clinkerExists = _repository.GetClinkerById(id);
+            if (clinkerExists == null)
+            {
+                return BadRequest($"The user id {id} could not be found.");
+            }
+            else
+            {
+                var currentInterests = _repository.GetInterestsByClinkerId(id);
+                if (currentInterests.Contains(interest))
+                {
+                    return BadRequest($"{interest} is already on {clinkerExists.FirstName}'s interest list");
+                }
+                else
+                {
+                    _repository.CheckMasterInterestsAndUpdate(interest);
+                    clinkerExists.AddInterests(interest);
+                    return Ok(_repository.GetClinkerById(id));
+                }
+            }
+        }
+
+        //api/Clinker/RemoveInterest/1/archery
+        [HttpPut("RemoveInterest/{id}/{interest}")]
+        public IActionResult RemoveClinkerInterest(int id, string interest)
+        {
+            var clinkerExists = _repository.GetClinkerById(id);
+            if (clinkerExists == null)
+            {
+                return BadRequest($"The user id {id} could not be found.");
+            }
+            else
+            {
+                var currentInterests = _repository.GetInterestsByClinkerId(id);
+                if (currentInterests.Contains(interest))
+                {
+                    clinkerExists.RemoveInterests(interest);
+                    return Ok(_repository.GetClinkerById(id));
+                }
+                else
+                {
+                    return BadRequest($"{interest} was not found on {clinkerExists.FirstName}'s interest list");
+
+                }
+            }
+        }
+
+        //api/Clinker/AddService/1
+        [HttpPut("AddService/{clinkerId}")]
+        public IActionResult AddService(int clinkerId, Services serviceToAdd)
+        {
+            var clinkerExists = _repository.GetClinkerById(clinkerId);
+            if (clinkerExists == null)
+            {
+                return BadRequest($"The user id {clinkerId} could not be found.");
+            }
+            else
+            {
+                var currentClinkerService = _repository.GetServicesByClinkerId(clinkerId);
+                if (currentClinkerService.FirstOrDefault(s => s.Name.ToLower() == serviceToAdd.Name.ToLower()) != null)
+                {
+                    return BadRequest($"{serviceToAdd.Name} is already on {clinkerExists.FirstName}'s service list");
+                }
+                else
+                {
+                    var currentService = _repository.CheckForService(serviceToAdd);
+                    if (currentService == null)
+                    {
+                        _repository.CreateService(serviceToAdd);
+                        var newService = _repository.CheckForService(serviceToAdd);
+                        clinkerExists.AddService(newService);
+                    }
+                    else
+                    {
+                        clinkerExists.AddService(currentService);
+                    }
+                    return Ok(_repository.GetClinkerById(clinkerId));
+                }
+            }
+        }
+
+        //api/Clinker/RemoveService/1
+        [HttpPut("RemoveService/{clinkerId}")]
+        public IActionResult RemoveClinkerService(int clinkerId, Services serviceToRemove)
+        {
+            var clinkerExists = _repository.GetClinkerById(clinkerId);
+            if (clinkerExists == null)
+            {
+                return BadRequest($"The user id {clinkerId} could not be found.");
+            }
+            else
+            {
+                var currentClinkerServices = _repository.GetServicesByClinkerId(clinkerId);
+                var matchToCurrentService = currentClinkerServices.FirstOrDefault(s => s.Name.ToLower() == serviceToRemove.Name.ToLower());
+                if (matchToCurrentService == null)
+                {
+                    return BadRequest($"{serviceToRemove.Name} was not found on {clinkerExists.FirstName}'s service list");
+                }
+                else
+                {
+                    clinkerExists.RemoveService(matchToCurrentService);
+                    return Ok(_repository.GetClinkerById(clinkerId));
+                }
+            }
+        }
+
     }
 }
