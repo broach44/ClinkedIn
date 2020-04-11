@@ -63,13 +63,24 @@ namespace ClinkedIn.DataAccessLayer
             }
         }
 
+        public Services CheckForService(Services newService)
+        {
+            return _services.FirstOrDefault(s => s.Name.ToLower() == newService.Name.ToLower());
+        }
+
+        public void CreateService(Services newService)
+        {
+            newService.Id = _services.Max(i => i.Id) + 1;
+            _services.Add(newService);
+        }
+
         public List<string> GetInterestsByClinkerId(int id)
         {
             var targetClinker = GetClinkerById(id);
             return targetClinker.Interests;
         }
 
-        public List<Services> GetServicessByClinkerId(int id)
+        public List<Services> GetServicesByClinkerId(int id)
         {
             var targetClinker = GetClinkerById(id);
             return targetClinker.Service;

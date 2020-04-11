@@ -15,9 +15,22 @@ namespace ClinkedIn.Models
         public List<Clinker> Friends { get; set; }
         public List<Services> Service { get; set; }
 
+        public Clinker()
+        {
+            Interests = new List<string>();
+            Enemies = new List<Clinker>();
+            Friends = new List<Clinker>();
+            Service = new List<Services>();
+        }
+
         public void AddInterests(string newInterest)
         {
             Interests.Add(newInterest);
+        }
+
+        public void AddService(Services newService)
+        {
+            Service.Add(newService);
         }
     }
 }
