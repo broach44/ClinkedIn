@@ -10,10 +10,11 @@ namespace ClinkedIn.DataAccessLayer
 {
     public class ClinkerRepo
     {
+
         static List<Clinker> _clinkers = new List<Clinker>() 
         {
 
-            new Clinker { Id = 1, FirstName = "John", LastName = "Doe", Interests = new List<string>() { "Killin" }, Friends = new List<Clinker>(), Enemies = new List<Clinker>() },
+            new Clinker { Id = 1, FirstName = "John", LastName = "Doe", Interests = new List<string>() { "Killin" }, Enemies = new List<Clinker>() },
             new Clinker { Id = 2, FirstName = "Jimmie", LastName = "John", Interests = new List<string>() { "Killin" } },
             new Clinker { Id = 3, FirstName = "Sam", LastName = "Smith", Interests = new List<string>() { "BeatBoxin" } },
             new Clinker { Id = 4, FirstName = "Samson", LastName = "Smith", Interests = new List<string>() { "BeatBoxin" } },
@@ -57,6 +58,24 @@ namespace ClinkedIn.DataAccessLayer
             return _clinkers;
         }
 
+        public List<Clinker> GetAllMyFriends(int clinkerId)
+        {
+            return GetClinkerById(clinkerId).Friends;
+        }
+
+        public List<Clinker> AllFriendsOfFriends(int clinkerId)
+        {
+            var clinkersFriends = GetAllMyFriends(clinkerId);
+            if (clinkersFriends != null)
+            {
+                foreach (var friend in clinkersFriends)
+                {
+                    return GetAllMyFriends(friend.Id);
+                }
+            }
+            return clinkersFriends;
+        }
+
         public Clinker GetClinkerById(int clinkerId)
         {
             return _clinkers.FirstOrDefault(c => c.Id == clinkerId);
@@ -73,9 +92,6 @@ namespace ClinkedIn.DataAccessLayer
 
         public List<Clinker> GetClinkerByInterest(string interest)
         {
-            // search through the List of Clinkers and pull in ones that match the interest
-            // 1. search each clinker
-            // 2. search clinkers interests and see if they match the interest argument
             var clinkerInterestMatch = _clinkers.FindAll(x => x.Interests.Contains(interest));
         
             return clinkerInterestMatch;
@@ -111,7 +127,6 @@ namespace ClinkedIn.DataAccessLayer
                 var clinkerToUpdate = GetClinkerById(clinkerToUpdateId);
                 clinkerToUpdate.AddNewFriend(newClinkerFriend);
                 return clinkerToUpdate;
-  
         }
 
         public Clinker UpdateEnemy(int clinkerToUpdateId, int clinkerToAddId)

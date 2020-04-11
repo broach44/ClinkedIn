@@ -70,8 +70,8 @@ namespace ClinkedIn.Controllers
             }
         }
 
-        // api/ClinkedIn/searchByInterest/{interest}
-        // api/ClinkedIn/searchByInterest/origamin
+        // api/Clinker/searchByInterest/{interest}
+        // api/Clinker/searchByInterest/origamin
         [HttpGet("searchByInterest/{interest}")]
         public IActionResult GetByInterest(string interest)
         {
@@ -86,7 +86,43 @@ namespace ClinkedIn.Controllers
                 return Ok("No Clinkers Found With Those Interests");
             }
         }
-        
+
+        // api/Clinker/1/myFriends
+        // api/Clinker/{id}/myFriends
+        [HttpGet("{id}/myFriends")]
+        public IActionResult GetAllMyFriends(int id)
+        {
+            var allMyFriends = _repository.GetAllMyFriends(id);
+            var isEmpty = !allMyFriends.Any();
+
+            if (!isEmpty)
+            {
+                return Ok(allMyFriends);
+            }
+            else
+            {
+                return Ok("You have no friends!");
+            }
+;
+        }
+
+        // api/Clinker/1/FriendsOfMyFriends
+        // api/Clinker/{id}/FriendsOfMyFriends
+        [HttpGet("{id}/FriendsOfMyFriends")]
+        public IActionResult GetAllFriendsOfMyFriends(int id)
+        {
+            var allMyFriends = _repository.AllFriendsOfFriends(id);
+            var isEmpty = !allMyFriends.Any();
+
+            if (!isEmpty)
+            {
+                return Ok(allMyFriends);
+            }
+            else
+            {
+                return Ok("Your friends have no friends");
+            }
+;       }
         
          //api/Clinker/1/addFriend/2       
         [HttpPut("{clinkerId}/addFriend/{friendId}")]
