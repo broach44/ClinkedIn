@@ -15,13 +15,14 @@ namespace ClinkedIn.Controllers
     {
         ClinkerRepo _repository = new ClinkerRepo();
 
+
         [HttpPost]
         public IActionResult AddClinker(Clinker clinkerToAdd)
         {
             var existingClinker = _repository.GetByFullName(clinkerToAdd);
             if (existingClinker == null)
             {
-                _repository.Add(clinkerToAdd);           
+                _repository.Add(clinkerToAdd);
                 return Created("", clinkerToAdd);
             }
             else
@@ -62,7 +63,7 @@ namespace ClinkedIn.Controllers
             if (singleClinker != null)
             {
                 return Ok(singleClinker);
-            }
+            } 
             else
             {
                 return NotFound("No clinker found");
@@ -77,7 +78,7 @@ namespace ClinkedIn.Controllers
             var clinkersWithInterest = _repository.GetClinkerByInterest(interest);
             var isEmpty = !clinkersWithInterest.Any();
             if (!isEmpty)
-            {
+            { 
                 return Ok(clinkersWithInterest);
             }
             else
@@ -85,14 +86,14 @@ namespace ClinkedIn.Controllers
                 return Ok("No Clinkers Found With Those Interests");
             }
         }
-
-        //api/Clinker/1/addFriend/2       
+        
+        
+         //api/Clinker/1/addFriend/2       
         [HttpPut("{clinkerId}/addFriend/{friendId}")]
         public IActionResult UpdateClinkerFriends(int clinkerId, int friendId)
         {
             var updatedClinker = _repository.UpdateFriend(clinkerId, friendId);
             return Ok(updatedClinker);
-
         }
 
         //api/Clinker/1/addEnemy/2       
@@ -101,7 +102,6 @@ namespace ClinkedIn.Controllers
         {
             var updatedClinker = _repository.UpdateEnemy(clinkerId, enemyId);
             return Ok(updatedClinker);
-
         }
 
         //api/Clinker/AddInterest/1/archery

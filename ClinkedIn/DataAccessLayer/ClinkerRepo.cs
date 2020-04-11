@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
+
 namespace ClinkedIn.DataAccessLayer
 {
     public class ClinkerRepo
     {
         static List<Clinker> _clinkers = new List<Clinker>() 
         {
-
 
             new Clinker { Id = 1, FirstName = "John", LastName = "Doe", Interests = new List<string>() { "Killin" }, Friends = new List<Clinker>(), Enemies = new List<Clinker>() },
             new Clinker { Id = 2, FirstName = "Jimmie", LastName = "John", Interests = new List<string>() { "Killin" } },
@@ -20,7 +21,6 @@ namespace ClinkedIn.DataAccessLayer
             new Clinker {Id = 6, FirstName = "Slash", LastName = "MacGruber", Interests = new List<string>() { "Killin", "BasketWeavin" }},
             new Clinker {Id = 7, FirstName = "Slick", LastName = "Willie", Interests = new List<string>() { "Origamin" }},
             new Clinker {Id = 8, FirstName = "LittleShoe", LastName = "Wilomena", Interests = new List<string>() { "Killin", "BeatBoxin", "Origamin" } },
-
 
         };
 
@@ -62,16 +62,6 @@ namespace ClinkedIn.DataAccessLayer
             return _clinkers.FirstOrDefault(c => c.Id == clinkerId);
         }
 
-        public List<Clinker> GetClinkerByInterest(string interest)
-        {
-            // search through the List of Clinkers and pull in ones that match the interest
-            // 1. search each clinker
-            // 2. search clinkers interests and see if they match the interest argument
-            var clinkerInterestMatch = _clinkers.FindAll(x => x.Interests.Contains(interest));
-
-            return clinkerInterestMatch;
-        }
-
         public void CheckMasterInterestsAndUpdate(string newInterest)
         {
             var existingInterest = _interests.FirstOrDefault(i => i.ToLower() == newInterest.ToLower());
@@ -79,6 +69,16 @@ namespace ClinkedIn.DataAccessLayer
             {
                 _interests.Add(newInterest);
             }
+        }
+
+        public List<Clinker> GetClinkerByInterest(string interest)
+        {
+            // search through the List of Clinkers and pull in ones that match the interest
+            // 1. search each clinker
+            // 2. search clinkers interests and see if they match the interest argument
+            var clinkerInterestMatch = _clinkers.FindAll(x => x.Interests.Contains(interest));
+        
+            return clinkerInterestMatch;
         }
 
         public List<string> GetInterestsByClinkerId(int id)
@@ -104,14 +104,14 @@ namespace ClinkedIn.DataAccessLayer
             var targetClinker = GetClinkerById(id);
             return targetClinker.Services;
         }
-
+ 
         public Clinker UpdateFriend(int clinkerToUpdateId, int clinkerToAddId)
         {
-            var newClinkerFriend = GetClinkerById(clinkerToAddId);
-            var clinkerToUpdate = GetClinkerById(clinkerToUpdateId);
-            clinkerToUpdate.AddNewFriend(newClinkerFriend);
-            return clinkerToUpdate;
-
+                var newClinkerFriend = GetClinkerById(clinkerToAddId);
+                var clinkerToUpdate = GetClinkerById(clinkerToUpdateId);
+                clinkerToUpdate.AddNewFriend(newClinkerFriend);
+                return clinkerToUpdate;
+  
         }
 
         public Clinker UpdateEnemy(int clinkerToUpdateId, int clinkerToAddId)
