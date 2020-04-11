@@ -18,9 +18,9 @@ namespace ClinkedIn.Models
 
         public Clinker()
         {
-            Interests = new List<string>();
-            Enemies = new List<Clinker>();
             Friends = new List<Clinker>();
+            Enemies = new List<Clinker>();
+            Interests = new List<string>();
             Services = new List<Services>();
         }
 
