@@ -93,9 +93,17 @@ namespace ClinkedIn.Controllers
         [HttpGet("{id}/searchForPrisonTerm")]
         public IActionResult GetByPrisonTerm(int id)
         {
-            var inmatePrisonTerm = _repository.GetClinkerByPrisonTerm(id);
-           
+            var validClinker = _repository.GetClinkerById(id);
+            if (validClinker == null)
+            {
+                return BadRequest($"The user id {id} could not be found.");
+            }
+            else
+            {
+                var inmatePrisonTerm = _repository.GetClinkerByPrisonTerm(id);
+
                 return Ok(inmatePrisonTerm);
+            }
            
         }
 
