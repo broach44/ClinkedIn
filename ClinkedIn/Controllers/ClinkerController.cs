@@ -94,15 +94,9 @@ namespace ClinkedIn.Controllers
         public IActionResult GetByPrisonTerm(int id)
         {
             var inmatePrisonTerm = _repository.GetClinkerByPrisonTerm(id);
-            //var noSentence = !inmatePrisonTerm.Any();
-            //if (!noSentence)
-            //{
+           
                 return Ok(inmatePrisonTerm);
-            //}
-            //else
-            //{
-            //    return Ok("No prison term available for this inmate.");
-            //}
+           
         }
 
         
