@@ -87,6 +87,28 @@ namespace ClinkedIn.Controllers
             }
         }
 
+
+        //api/Clinker/1/searchForPrisonTerm
+        //api/Clinker/{id}/searchForPrisonTerm
+        [HttpGet("{id}/searchForPrisonTerm")]
+        public IActionResult GetByPrisonTerm(int id)
+        {
+            var validClinker = _repository.GetClinkerById(id);
+            if (validClinker == null)
+            {
+                return BadRequest($"The user id {id} could not be found.");
+            }
+            else
+            {
+                var inmatePrisonTerm = _repository.GetClinkerByPrisonTerm(id);
+
+                return Ok(inmatePrisonTerm);
+            }
+           
+        }
+
+        
+
         // api/Clinker/1/myFriends
         // api/Clinker/{id}/myFriends
         [HttpGet("{id}/myFriends")]
@@ -103,7 +125,7 @@ namespace ClinkedIn.Controllers
             {
                 return Ok("You have no friends!");
             }
-;
+
         }
 
         // api/Clinker/1/FriendsOfMyFriends
@@ -122,7 +144,8 @@ namespace ClinkedIn.Controllers
             {
                 return Ok("Your friends have no friends");
             }
-;       }
+       }
+
         
          //api/Clinker/1/addFriend/2       
         [HttpPut("{clinkerId}/addFriend/{friendId}")]
