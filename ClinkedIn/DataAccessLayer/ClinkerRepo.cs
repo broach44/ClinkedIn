@@ -146,18 +146,32 @@ namespace ClinkedIn.DataAccessLayer
 
         public Clinker UpdateFriend(int clinkerToUpdateId, int clinkerToAddId)
         {
-                var newClinkerFriend = GetClinkerById(clinkerToAddId);
-                var clinkerToUpdate = GetClinkerById(clinkerToUpdateId);
+            var newClinkerFriend = GetClinkerById(clinkerToAddId);
+            var clinkerToUpdate = GetClinkerById(clinkerToUpdateId);
+            if (newClinkerFriend != null && clinkerToUpdate != null)
+            {
                 clinkerToUpdate.AddNewFriend(newClinkerFriend);
                 return clinkerToUpdate;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public Clinker UpdateEnemy(int clinkerToUpdateId, int clinkerToAddId)
         {
             var newClinkerEnemy = GetClinkerById(clinkerToAddId);
             var clinkerToUpdate = GetClinkerById(clinkerToUpdateId);
-            clinkerToUpdate.AddNewEnemy(newClinkerEnemy);
-            return clinkerToUpdate;
+            if (newClinkerEnemy != null && clinkerToUpdate != null)
+            {
+                clinkerToUpdate.AddNewEnemy(newClinkerEnemy);
+                return clinkerToUpdate;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

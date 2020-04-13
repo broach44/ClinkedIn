@@ -144,7 +144,14 @@ namespace ClinkedIn.Controllers
         public IActionResult UpdateClinkerFriends(int clinkerId, int friendId)
         {
             var updatedClinker = _repository.UpdateFriend(clinkerId, friendId);
-            return Ok(updatedClinker);
+            if (updatedClinker != null)
+            {
+                return Ok(updatedClinker);
+            }
+            else
+            {
+                return BadRequest("The Clinker does not exist.");
+            }
         }
 
         //api/Clinker/1/addEnemy/2       
@@ -152,7 +159,14 @@ namespace ClinkedIn.Controllers
         public IActionResult UpdateClinkerEnemies(int clinkerId, int enemyId)
         {
             var updatedClinker = _repository.UpdateEnemy(clinkerId, enemyId);
-            return Ok(updatedClinker);
+            if (updatedClinker != null)
+            {
+                return Ok(updatedClinker);
+            }
+            else
+            {
+                return BadRequest("The Clinker does not exist.");
+            }
         }
 
         //api/Clinker/AddInterest/1/archery
